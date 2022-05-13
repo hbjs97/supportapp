@@ -1,18 +1,18 @@
 export default function useToken() {
   const getAccessToken = () => {
-    return localStorage.getItem("@accessToken") || null;
+    return sessionStorage.getItem("@accessToken") || null;
   };
 
   const setAccessToken = (accessToken) => {
-    localStorage.setItem("@accessToken", accessToken);
+    sessionStorage.setItem("@accessToken", accessToken);
   };
 
   const getRefreshToken = () => {
-    return localStorage.getItem("@refreshToken") || null;
+    return sessionStorage.getItem("@refreshToken") || null;
   };
 
   const setRefreshToken = (refreshToken) => {
-    localStorage.setItem("@refreshToken", refreshToken);
+    sessionStorage.setItem("@refreshToken", refreshToken);
   };
 
   return { getAccessToken, setAccessToken, getRefreshToken, setRefreshToken };

@@ -62,7 +62,6 @@ const WriteMall = () => {
         longitude: x,
         latitude: y,
       });
-      setIsOpen(false);
     },
     [values]
   );
@@ -183,34 +182,6 @@ const WriteMall = () => {
                       <Grid item md={12} xs={12}>
                         <TextField
                           fullWidth
-                          label="Address"
-                          name="address"
-                          onClick={() => setIsOpen(true)}
-                          required
-                          focused
-                          value={values.address}
-                          variant="outlined"
-                          sx={{
-                            "& .css-igzd9l-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor: "#E6E8F0",
-                              },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item md={12} xs={12}>
-                        <TextField
-                          fullWidth
-                          label="Address Detail"
-                          name="addressDetail"
-                          onChange={handleChange}
-                          value={values.addressDetail}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item md={12} xs={12}>
-                        <TextField
-                          fullWidth
                           label="Remark"
                           name="remark"
                           onChange={handleChange}
@@ -245,6 +216,36 @@ const WriteMall = () => {
                     </Grid>
                   </CardContent>
                   <Divider />
+                  <CardContent>
+                    <Grid container spacing={3}>
+                      <Grid item md={12} xs={12}>
+                        <Button color="primary" variant="contained" onClick={() => setIsOpen(true)}>
+                          Search Address
+                        </Button>
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          name="address"
+                          required
+                          value={values.address}
+                          variant="outlined"
+                          disabled
+                        />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Address Detail"
+                          name="addressDetail"
+                          onChange={handleChange}
+                          value={values.addressDetail}
+                          variant="outlined"
+                        />
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                  <Divider />
                   <Box
                     sx={{
                       display: "flex",
@@ -262,7 +263,7 @@ const WriteMall = () => {
           </Grid>
         </Container>
       </Box>
-      <AddressGeo isOpen={isOpen} onClose={() => setIsOpen(false)} onClick={handleChangeAddress} />
+      <AddressGeo isOpen={isOpen} onClose={() => setIsOpen(false)} onChange={handleChangeAddress} />
     </>
   );
 };

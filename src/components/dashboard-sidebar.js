@@ -13,7 +13,7 @@ import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 
 const logout = () => {
-  localStorage.clear();
+  sessionStorage.clear();
   window.location.replace("/login");
 };
 

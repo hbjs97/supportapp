@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import { Clock as ClockIcon } from "../../icons/clock";
 import { Lock as LockIcon } from "../../icons/lock";
 
-export const MallCard = ({ mall, ...rest }) => (
+export const MallCard = ({ mall, cursor, ...rest }) => (
   <Card
     sx={{
       display: "flex",
       flexDirection: "column",
       height: "100%",
+      cursor,
     }}
     {...rest}
   >
@@ -64,4 +65,9 @@ export const MallCard = ({ mall, ...rest }) => (
 
 MallCard.propTypes = {
   mall: PropTypes.object.isRequired,
+  cursor: PropTypes.oneOf(["auto", "pointer"]),
+};
+
+MallCard.defaultProps = {
+  cursor: "auto",
 };

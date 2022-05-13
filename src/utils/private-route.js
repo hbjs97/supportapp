@@ -10,7 +10,7 @@ export const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      localStorage.clear();
+      sessionStorage.clear();
       router.push("/login");
     }
   }, [isLoggedIn]);

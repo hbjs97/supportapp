@@ -40,8 +40,6 @@ const Map = () => {
     [malls]
   );
 
-  console.log(malls);
-
   const getMalls = useCallback(async () => {
     const {
       data,

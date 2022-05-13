@@ -15,7 +15,7 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-      localStorage.clear();
+      sessionStorage.clear();
       Router.push("/login");
     }
   }
@@ -32,6 +32,7 @@ export const apiRoute = {
   user: {
     subscribers: "/users/subscribers",
     duplication: "/users/duplication",
+    publish: "users/publish-alarms",
   },
   bookmark: "/bookmarks",
   mall: {
@@ -133,6 +134,31 @@ export async function RequestMultiPartPost(url, body, token) {
 
   return axios
     .post(url, body, {
+      headers: headerTemplate,
+    })
+    .then((res) => ({
+      data: res?.data,
+      config: {
+        status: res?.status,
+        ...res?.data?.meta,
+      },
+    }))
+    .catch((error) => {
+      return {
+        data: error.response?.data,
+        config: {
+          status: -1,
+        },
+      };
+    });
+}
+
+export async function RequestMultiPartPatch(url, body, token) {
+  const headerTemplate = { "Content-Type": "multipart/form-data" };
+  if (token) Object.assign(headerTemplate, { authorization: `Bearer ${token}` });
+
+  return axios
+    .patch(url, body, {
       headers: headerTemplate,
     })
     .then((res) => ({

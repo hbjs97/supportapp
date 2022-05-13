@@ -1,53 +1,18 @@
-import {
-  Backdrop,
-  Box,
-  Container,
-  Fade,
-  InputAdornment,
-  Modal,
-  Pagination,
-  SvgIcon,
-  TextField,
-} from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
-import { Search as SearchIcon } from "src/icons/search";
-import { RequestKakaoAddressApi } from "src/utils/fetch-api";
-import { AddressListResults } from "./address-list.results";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Backdrop, Box, Fade, Modal, Paper, Tab } from "@mui/material";
+import { useCallback, useState } from "react";
+import AddressGoogleMap from "./address-google-map";
+import AddressSearchKakao from "./address-search-kakao";
 
 const AddressGeo = (props) => {
-  const { isOpen, onClose, onClick } = props;
-  const [query, setQuery] = useState(" ");
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(0);
-  const [addresses, setAddresses] = useState([]);
-
-  const searchAddress = useCallback(async () => {
-    const { data, config } = await RequestKakaoAddressApi(query, page);
-    if (config.status !== 200) {
-      alert("카카오 주소검색 API 호출 실패");
-      return;
-    }
-    setAddresses(data);
-    setSize(config.pageable_count);
-  }, [page, query]);
-
-  const handleChangeQuery = useCallback(
-    (event) => {
-      setQuery(event.target.value);
+  const { isOpen, onClose, onChange } = props;
+  const [labValue, setLabValue] = useState("1");
+  const handleChange = useCallback(
+    (event, newValue) => {
+      setLabValue(newValue);
     },
-    [query]
+    [labValue]
   );
-
-  const handleChangePage = useCallback(
-    (event, newPage) => {
-      if (newPage) setPage(newPage);
-    },
-    [page]
-  );
-
-  useEffect(() => {
-    searchAddress();
-  }, [page]);
 
   return (
     <Modal
@@ -70,6 +35,7 @@ const AddressGeo = (props) => {
             transform: "translate(-50%, -50%)",
             width: "800px",
             maxHeight: "80vh",
+            overflowY: "scroll",
             bgcolor: "white",
             border: "1px solid rgba(0,0,0,0.2)",
             borderRadius: "3px",
@@ -78,42 +44,24 @@ const AddressGeo = (props) => {
             outline: "none",
           }}
         >
-          <Container maxWidth sx={{ padding: "24px" }}>
-            <TextField
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SvgIcon color="action" fontSize="small">
-                      <SearchIcon />
-                    </SvgIcon>
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleChangeQuery}
-              onKeyDown={(e) => e.key == "Enter" && searchAddress()}
-              placeholder="Search address"
-              variant="outlined"
-            />
-            <Box sx={{ mt: 3 }}>
-              <AddressListResults addresses={addresses} onClick={onClick} />
+          <Paper sx={{ padding: "15px", boxShadow: 0 }}>
+            <Box>
+              <TabContext value={labValue}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <TabList onChange={handleChange}>
+                    <Tab label="Search" value="1" />
+                    <Tab label="Pick" value="2" />
+                  </TabList>
+                </Box>
+                <TabPanel value="1" sx={{ paddingX: 0 }}>
+                  <AddressSearchKakao onChange={onChange} onClose={onClose} />
+                </TabPanel>
+                <TabPanel value="2" sx={{ paddingX: 0 }}>
+                  <AddressGoogleMap onChange={onChange} onClose={onClose} />
+                </TabPanel>
+              </TabContext>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                pt: 3,
-              }}
-            >
-              <Pagination
-                color="primary"
-                count={Math.ceil(size / 10) || 1}
-                page={page}
-                size="small"
-                onChange={handleChangePage}
-              />
-            </Box>
-          </Container>
+          </Paper>
         </Box>
       </Fade>
     </Modal>

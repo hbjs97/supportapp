@@ -2,7 +2,7 @@ import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow } from "@mu
 import PropTypes from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
-export const AddressListResults = ({ addresses, onClick }) => {
+export const AddressListResults = ({ addresses, onClick, onClose }) => {
   return (
     <Card>
       <PerfectScrollbar>
@@ -19,9 +19,10 @@ export const AddressListResults = ({ addresses, onClick }) => {
                 <TableRow
                   hover
                   key={address.id}
-                  onClick={() =>
-                    onClick({ address: address.address_name, x: address.x, y: address.y })
-                  }
+                  onClick={() => {
+                    onClick({ address: address.address_name, x: address.x, y: address.y });
+                    onClose();
+                  }}
                 >
                   <TableCell>{address.place_name}</TableCell>
                   <TableCell>{address.address_name}</TableCell>

@@ -1,4 +1,5 @@
 import { Box, Container, Grid } from "@mui/material";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DashboardLayout } from "src/components/dashboard-layout";
 import { MallCard } from "src/components/mall/mall-card";
@@ -8,6 +9,7 @@ import { apiRoute, RequestGet } from "src/utils/fetch-api";
 
 const Mall = () => {
   const [malls, setMalls] = useState([]);
+  const router = useRouter();
   const { getAccessToken } = useToken();
 
   const getMyMalls = async () => {
@@ -41,7 +43,11 @@ const Mall = () => {
             <Grid container spacing={3}>
               {malls.map((mall) => (
                 <Grid item key={mall.id} lg={4} md={6} xs={12}>
-                  <MallCard mall={mall} />
+                  <MallCard
+                    mall={mall}
+                    cursor="pointer"
+                    onClick={() => router.push(`mall/edit?id=${mall.id}`)}
+                  />
                 </Grid>
               ))}
             </Grid>

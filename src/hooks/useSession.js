@@ -5,14 +5,14 @@ export default function useSession() {
 
   const setUid = useCallback(
     (uid) => {
-      localStorage.setItem(UID_KEY, uid);
+      sessionStorage.setItem(UID_KEY, uid);
     },
-    [localStorage]
+    [sessionStorage]
   );
 
   const getUid = useCallback(() => {
-    return localStorage.getItem(UID_KEY);
-  }, [localStorage]);
+    return sessionStorage.getItem(UID_KEY);
+  }, [sessionStorage]);
 
   return {
     setUid,
